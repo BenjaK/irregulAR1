@@ -2,8 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{ar1_cross_cov}
 \alias{ar1_cross_cov}
-\title{Partial covariance matrix of vectors x and y observed at  (irregularly
-spaced) times times1 and times2, respectively.}
+\title{Cross-covariance matrix of a stationary Gaussian AR(1) process.}
 \usage{
 ar1_cross_cov(times1, times2, rho, sigma)
 }
@@ -17,11 +16,12 @@ ar1_cross_cov(times1, times2, rho, sigma)
 \item{sigma}{A positive real number.}
 }
 \value{
-A matrix with \code{n} rows and \code{n} columns.
+A matrix with \code{length(times2)} rows and \code{length(times1)}
+  columns.
 }
 \description{
 Creates the cross-covariance matrix of an AR(1) process with parameters
 \code{rho} and \code{sigma}, observed at (positive) integer times
-\code{times1} and \code{times2}.  The process is assumed to be in
-stationarity and have Gaussian errors.
+\code{times1} and \code{times2}, which may be irregularly spaced. The
+process is assumed to be in stationarity and have Gaussian errors.
 }

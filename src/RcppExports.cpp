@@ -85,25 +85,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// band1chol
-arma::sp_mat band1chol(const arma::mat& Q);
-RcppExport SEXP _irregulAR1_band1chol(SEXP QSEXP) {
+// chol_tridiag_lower
+arma::sp_mat chol_tridiag_lower(const arma::mat& Q);
+RcppExport SEXP _irregulAR1_chol_tridiag_lower(SEXP QSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type Q(QSEXP);
-    rcpp_result_gen = Rcpp::wrap(band1chol(Q));
+    rcpp_result_gen = Rcpp::wrap(chol_tridiag_lower(Q));
     return rcpp_result_gen;
 END_RCPP
 }
-// trid_chol
-arma::sp_mat trid_chol(const arma::mat& Q);
-RcppExport SEXP _irregulAR1_trid_chol(SEXP QSEXP) {
+// chol_tridiag_upper
+arma::sp_mat chol_tridiag_upper(const arma::mat& Q);
+RcppExport SEXP _irregulAR1_chol_tridiag_upper(SEXP QSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type Q(QSEXP);
-    rcpp_result_gen = Rcpp::wrap(trid_chol(Q));
+    rcpp_result_gen = Rcpp::wrap(chol_tridiag_upper(Q));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -115,8 +115,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_irregulAR1_ar1_cov_chol_irregular", (DL_FUNC) &_irregulAR1_ar1_cov_chol_irregular, 3},
     {"_irregulAR1_ar1_prec_consecutive", (DL_FUNC) &_irregulAR1_ar1_prec_consecutive, 3},
     {"_irregulAR1_ar1_prec_irregular", (DL_FUNC) &_irregulAR1_ar1_prec_irregular, 3},
-    {"_irregulAR1_band1chol", (DL_FUNC) &_irregulAR1_band1chol, 1},
-    {"_irregulAR1_trid_chol", (DL_FUNC) &_irregulAR1_trid_chol, 1},
+    {"_irregulAR1_chol_tridiag_lower", (DL_FUNC) &_irregulAR1_chol_tridiag_lower, 1},
+    {"_irregulAR1_chol_tridiag_upper", (DL_FUNC) &_irregulAR1_chol_tridiag_upper, 1},
     {NULL, NULL, 0}
 };
 

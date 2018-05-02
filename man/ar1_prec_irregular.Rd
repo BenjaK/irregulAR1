@@ -2,10 +2,24 @@
 % Please edit documentation in R/RcppExports.R
 \name{ar1_prec_irregular}
 \alias{ar1_prec_irregular}
-\title{Precision matrix}
+\title{Precision matrix for a stationary Gaussian AR(1) process, observed at
+irregularly spaced time points.}
 \usage{
 ar1_prec_irregular(times, rho, sigma)
 }
+\arguments{
+\item{times}{An vector of positive integers, preferably ordered.}
+
+\item{rho}{A real number strictly less than 1 in absolute value.}
+
+\item{sigma}{A positive real number.}
+}
+\value{
+A square matrix with \code{length(times)} rows.
+}
 \description{
-Precision matrix
+Creates the precision (inverse covariance) matrix of an AR(1) process with
+parameters \code{rho} and \code{sigma}, observed at the time points in the
+vector \code{times}. The process is assumed to be in stationarity and have
+Gaussian errors.
 }

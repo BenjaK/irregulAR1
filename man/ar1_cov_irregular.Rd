@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{ar1_cov_irregular}
 \alias{ar1_cov_irregular}
-\title{Covariance matrix of vector x observed at (irregularly spaced) times times.}
+\title{Covariance matrix for a stationary Gaussian AR(1) process, observed at
+irregularly spaced time points.}
 \usage{
 ar1_cov_irregular(times, rho, sigma)
 }

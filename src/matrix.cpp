@@ -6,8 +6,8 @@ using namespace Rcpp;
 
 // Covariance matrices ---------------------------------------------------------
 
-//' Covariance matrix of a vector \code{x} observed at \code{n} consecutive
-//' timepoints.
+//' Covariance matrix for a stationary Gaussian AR(1) process, observed at
+//' consecutive timepoints.
 //'
 //' Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 //' and \code{sigma}, observed at \code{n} consecutive time points. The process
@@ -34,7 +34,8 @@ arma::mat ar1_cov_consecutive(const arma::uword n,
   return A;
 }
 
-//' Covariance matrix of vector x observed at (irregularly spaced) times times.
+//' Covariance matrix for a stationary Gaussian AR(1) process, observed at
+//' irregularly spaced time points.
 //'
 //' Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 //' and \code{sigma}, observed at the time points in the vector \code{times}.
@@ -63,18 +64,18 @@ arma::mat ar1_cov_irregular(const arma::uvec& times,
   return A;
 }
 
-//' Partial covariance matrix of vectors x and y observed at  (irregularly
-//' spaced) times times1 and times2, respectively.
+//' Cross-covariance matrix of a stationary Gaussian AR(1) process.
 //'
 //' Creates the cross-covariance matrix of an AR(1) process with parameters
 //' \code{rho} and \code{sigma}, observed at (positive) integer times
-//' \code{times1} and \code{times2}.  The process is assumed to be in
-//' stationarity and have Gaussian errors.
+//' \code{times1} and \code{times2}, which may be irregularly spaced. The
+//' process is assumed to be in stationarity and have Gaussian errors.
 //' @param times1 An vector of positive integers, preferably ordered.
 //' @param times2 An vector of positive integers, preferably ordered.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
-//' @return A matrix with \code{n} rows and \code{n} columns.
+//' @return A matrix with \code{length(times2)} rows and \code{length(times1)}
+//'   columns.
 //' @export
 // [[Rcpp::export]]
 arma::mat ar1_cross_cov(const arma::uvec& times1,
@@ -97,8 +98,17 @@ arma::mat ar1_cross_cov(const arma::uvec& times1,
   return A;
 }
 
-//' Upper triangular Cholesky factorization of covariance matrix of a vector x
-//' observed at times times.
+//' Upper triangular Cholesky decomposition for a stationary Gaussian AR(1)
+//' process, observed at irregularly spaced time points.
+//'
+//' Creates the upper triangular Cholesky decomposition matrix of an AR(1)
+//' process with parameters \code{rho} and \code{sigma}, observed at the time
+//' points in the vector \code{times}. The process is assumed to be in
+//' stationarity and have Gaussian errors.
+//' @param times An vector of positive integers, preferably ordered.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A square matrix with \code{length(times)} rows.
 //' @export
 // [[Rcpp::export]]
 arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
@@ -109,7 +119,17 @@ arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
 
 // Precision matrices ----------------------------------------------------------
 
-//' Precision matrix of vector x observed at n consecutive times.
+//' Sparse precision matrix for a stationary Gaussian AR(1) process, observed at
+//' consecutive timepoints.
+//'
+//' Creates the precision (inverse covariance) matrix of an AR(1) process with
+//' parameters \code{rho} and \code{sigma}, observed at \code{n} consecutive
+//' time points. The process is assumed to be in stationarity and have Gaussian
+//' errors. The matrix is a tridiagonal band matrix and thus sparse.
+//' @param n An integer greater than or equal to 1.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A matrix with \code{n} rows and \code{n} columns.
 //' @export
 // [[Rcpp::export]]
 arma::sp_mat ar1_prec_consecutive(const arma::uword n,
@@ -126,7 +146,17 @@ arma::sp_mat ar1_prec_consecutive(const arma::uword n,
   return Q;
 }
 
-//' Precision matrix
+//' Precision matrix for a stationary Gaussian AR(1) process, observed at
+//' irregularly spaced time points.
+//'
+//' Creates the precision (inverse covariance) matrix of an AR(1) process with
+//' parameters \code{rho} and \code{sigma}, observed at the time points in the
+//' vector \code{times}. The process is assumed to be in stationarity and have
+//' Gaussian errors.
+//' @param times An vector of positive integers, preferably ordered.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A square matrix with \code{length(times)} rows.
 //' @export
 // [[Rcpp::export]]
 arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
@@ -155,10 +185,16 @@ arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
   return Q;
 }
 
-//' Banded Cholesky decomposition
+//' Lower Cholesky decomposition of a tridiagonal matrix.
+//'
+//' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
+//' decomposition will be a sparse lower triangular matrix with non-zero
+//' elements only on the main diagonal and the diagonal below it.
+//' @param Q A square tridiagonal matrix.
+//' @return A sparse square matrix with the same size as the input matrix.
 //' @export
 // [[Rcpp::export]]
-arma::sp_mat band1chol(const arma::mat& Q) {
+arma::sp_mat chol_tridiag_lower(const arma::mat& Q) {
   int n = Q.n_rows;
   arma::sp_mat L(n, n);
   arma::vec v = arma::zeros<arma::vec>(n);
@@ -173,12 +209,16 @@ arma::sp_mat band1chol(const arma::mat& Q) {
   return L;
 }
 
-//' Cholesky decomposition of tridiagonal matrix
-//' If Q is a tridiagonal matrix and Q = LL' = U'U, this function returns L'=U.
-//' See Algorithm 2.9 of Rue & Held
+//' Upper Cholesky decomposition of a tridiagonal matrix.
+//'
+//' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
+//' decomposition will be a sparse lower triangular matrix with non-zero
+//' elements only on the main diagonal and the diagonal below it.
+//' @param Q A square tridiagonal matrix.
+//' @return A sparse square matrix with the same size as the input matrix.
 //' @export
 // [[Rcpp::export]]
-arma::sp_mat trid_chol(const arma::mat& Q) {
+arma::sp_mat chol_tridiag_upper(const arma::mat& Q) {
   int n = Q.n_rows;
   arma::sp_mat U(n, n);
   int p = 1;

@@ -2,8 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{ar1_cov_consecutive}
 \alias{ar1_cov_consecutive}
-\title{Covariance matrix of a vector \code{x} observed at \code{n} consecutive
-timepoints.}
+\title{Covariance matrix for a stationary Gaussian AR(1) process, observed at
+consecutive timepoints.}
 \usage{
 ar1_cov_consecutive(n, rho, sigma)
 }
