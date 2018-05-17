@@ -116,8 +116,7 @@ arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
 //' @return A sparse square matrix with the same size as the input matrix.
 //' @export
 // [[Rcpp::export]]
-arma::sp_mat
-chol_tridiag_upper(const arma::sp_mat& Q);
+arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
 
 
 //' Backsolve with band 1 upper Cholesky.

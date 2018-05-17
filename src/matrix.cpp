@@ -135,9 +135,9 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q) {
 
 arma::vec band1_backsolve(const arma::sp_mat& U,
                           const arma::vec& z) {
-  int m = z.size() - 1;
+  int m = z.size();
   arma::vec v(m);
-  v(m) = z(m) / U(m, m);
+  v(m-1) = z(m-1) / U(m-1, m-1);
   for (int i = m - 2; i >= 0; --i) {
     v(i) = (z(i) - U(i, i + 1)) / U(i, i);
   }
