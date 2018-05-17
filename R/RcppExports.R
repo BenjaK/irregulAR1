@@ -96,18 +96,6 @@ ar1_prec_irregular <- function(times, rho, sigma) {
     .Call(`_irregulAR1_ar1_prec_irregular`, times, rho, sigma)
 }
 
-#' Lower Cholesky decomposition of a tridiagonal matrix.
-#'
-#' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
-#' decomposition will be a sparse lower triangular matrix with non-zero
-#' elements only on the main diagonal and the diagonal below it.
-#' @param Q A square tridiagonal matrix.
-#' @return A sparse square matrix with the same size as the input matrix.
-#' @export
-chol_tridiag_lower <- function(Q) {
-    .Call(`_irregulAR1_chol_tridiag_lower`, Q)
-}
-
 #' Upper Cholesky decomposition of a tridiagonal matrix.
 #'
 #' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
@@ -118,5 +106,40 @@ chol_tridiag_lower <- function(Q) {
 #' @export
 chol_tridiag_upper <- function(Q) {
     .Call(`_irregulAR1_chol_tridiag_upper`, Q)
+}
+
+#' Backsolve with band 1 upper Cholesky.
+#'
+#' Backsolve with band 1 upper Cholesky.
+#' @param Q A square tridiagonal matrix.
+#' @return A sparse square matrix with the same size as the input matrix.
+#' @export
+band1_backsolve <- function(U, z) {
+    .Call(`_irregulAR1_band1_backsolve`, U, z)
+}
+
+#' Simulate from a stationary Gaussian AR(1) process.
+#'
+#' Simulate from a stationary Gaussian AR(1) process at \code{n} consecutive
+#' time points.
+#' @param n The number of timepoints to simulate for.
+#' @param rho A real number strictly less than 1 in absolute value.
+#' @param sigma A positive real number.
+#' @return A vector of length \code{n} with the process values.
+#' @keywords internal
+ar1_sim_cpp <- function(n, rho, sigma) {
+    .Call(`_irregulAR1_ar1_sim_cpp`, n, rho, sigma)
+}
+
+#' Simulate from a stationary Gaussian AR(1) process at irregular times.
+#'
+#' Simulate from a stationary Gaussian AR(1) process at irregular times.
+#' @param n The number of timepoints to simulate for.
+#' @param rho A real number strictly less than 1 in absolute value.
+#' @param sigma A positive real number.
+#' @return A vector of length \code{n} with the process values.
+#' @keywords internal
+ar1_sim_irregular_cpp <- function(times, rho, sigma) {
+    .Call(`_irregulAR1_ar1_sim_irregular_cpp`, times, rho, sigma)
 }
 

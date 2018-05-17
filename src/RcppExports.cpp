@@ -7,12 +7,12 @@
 using namespace Rcpp;
 
 // ar1_cov_consecutive
-arma::mat ar1_cov_consecutive(const arma::uword n, const double rho, const double sigma);
+arma::mat ar1_cov_consecutive(const int n, const double rho, const double sigma);
 RcppExport SEXP _irregulAR1_ar1_cov_consecutive(SEXP nSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::uword >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
     Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
     rcpp_result_gen = Rcpp::wrap(ar1_cov_consecutive(n, rho, sigma));
@@ -60,12 +60,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // ar1_prec_consecutive
-arma::sp_mat ar1_prec_consecutive(const arma::uword n, const double rho, const double sigma);
+arma::sp_mat ar1_prec_consecutive(const int n, const double rho, const double sigma);
 RcppExport SEXP _irregulAR1_ar1_prec_consecutive(SEXP nSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::uword >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
     Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
     rcpp_result_gen = Rcpp::wrap(ar1_prec_consecutive(n, rho, sigma));
@@ -85,25 +85,52 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// chol_tridiag_lower
-arma::sp_mat chol_tridiag_lower(const arma::mat& Q);
-RcppExport SEXP _irregulAR1_chol_tridiag_lower(SEXP QSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Q(QSEXP);
-    rcpp_result_gen = Rcpp::wrap(chol_tridiag_lower(Q));
-    return rcpp_result_gen;
-END_RCPP
-}
 // chol_tridiag_upper
-arma::sp_mat chol_tridiag_upper(const arma::mat& Q);
+arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
 RcppExport SEXP _irregulAR1_chol_tridiag_upper(SEXP QSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Q(QSEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type Q(QSEXP);
     rcpp_result_gen = Rcpp::wrap(chol_tridiag_upper(Q));
+    return rcpp_result_gen;
+END_RCPP
+}
+// band1_backsolve
+arma::vec band1_backsolve(const arma::sp_mat& U, const arma::vec& z);
+RcppExport SEXP _irregulAR1_band1_backsolve(SEXP USEXP, SEXP zSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type U(USEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type z(zSEXP);
+    rcpp_result_gen = Rcpp::wrap(band1_backsolve(U, z));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ar1_sim_cpp
+arma::vec ar1_sim_cpp(const int n, const double rho, const double sigma);
+RcppExport SEXP _irregulAR1_ar1_sim_cpp(SEXP nSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ar1_sim_cpp(n, rho, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
+// ar1_sim_irregular_cpp
+arma::vec ar1_sim_irregular_cpp(const arma::uvec times, const double rho, const double sigma);
+RcppExport SEXP _irregulAR1_ar1_sim_irregular_cpp(SEXP timesSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::uvec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ar1_sim_irregular_cpp(times, rho, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -115,8 +142,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_irregulAR1_ar1_cov_chol_irregular", (DL_FUNC) &_irregulAR1_ar1_cov_chol_irregular, 3},
     {"_irregulAR1_ar1_prec_consecutive", (DL_FUNC) &_irregulAR1_ar1_prec_consecutive, 3},
     {"_irregulAR1_ar1_prec_irregular", (DL_FUNC) &_irregulAR1_ar1_prec_irregular, 3},
-    {"_irregulAR1_chol_tridiag_lower", (DL_FUNC) &_irregulAR1_chol_tridiag_lower, 1},
     {"_irregulAR1_chol_tridiag_upper", (DL_FUNC) &_irregulAR1_chol_tridiag_upper, 1},
+    {"_irregulAR1_band1_backsolve", (DL_FUNC) &_irregulAR1_band1_backsolve, 2},
+    {"_irregulAR1_ar1_sim_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_cpp, 3},
+    {"_irregulAR1_ar1_sim_irregular_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_irregular_cpp, 3},
     {NULL, NULL, 0}
 };
 
