@@ -1,10 +1,10 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <cmath>
 #include "matrix.h"
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppArmadillo)]]
 
 
 //' Simulate from a stationary Gaussian AR(1) process.
@@ -17,9 +17,9 @@
 //' @return A vector of length \code{n} with the process values.
 //' @keywords internal
 // [[Rcpp::export]]
-Eigen::VectorXd ar1_sim_cpp(const int n,
-                            const double rho,
-                            const double sigma);
+arma::vec ar1_sim_cpp(const int n,
+                      const double rho,
+                      const double sigma);
 
 //' Simulate from a stationary Gaussian AR(1) process at irregular times.
 //'
@@ -30,8 +30,8 @@ Eigen::VectorXd ar1_sim_cpp(const int n,
 //' @return A vector of length \code{n} with the process values.
 //' @keywords internal
 // [[Rcpp::export]]
-Eigen::VectorXd ar1_sim_irregular_cpp(const Eigen::VectorXi times,
-                                      const double rho,
-                                      const double sigma);
+arma::vec ar1_sim_irregular_cpp(const arma::uvec times,
+                                const double rho,
+                                const double sigma);
 
 #endif

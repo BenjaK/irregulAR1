@@ -1,9 +1,9 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <RcppEigen.h>
+#include <RcppArmadillo.h>
 #include <cmath>
-// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::depends(RcppArmadillo)]]
 
 //' Covariance matrix for a stationary Gaussian AR(1) process, observed at
 //' consecutive timepoints.
@@ -17,9 +17,9 @@
 //' @return A matrix with \code{n} rows and \code{n} columns.
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd ar1_cov_consecutive(const int n,
-                                    const double rho,
-                                    const double sigma);
+arma::mat ar1_cov_consecutive(const int n,
+                              const double rho,
+                              const double sigma);
 
 //' Covariance matrix for a stationary Gaussian AR(1) process, observed at
 //' irregularly spaced time points.
@@ -33,9 +33,9 @@ Eigen::MatrixXd ar1_cov_consecutive(const int n,
 //' @return A square matrix with \code{length(times)} rows.
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd ar1_cov_irregular(const Eigen::VectorXi& times,
-                                  const double rho,
-                                  const double sigma);
+arma::mat ar1_cov_irregular(const arma::uvec& times,
+                            const double rho,
+                            const double sigma);
 
 //' Cross-covariance matrix of a stationary Gaussian AR(1) process.
 //'
@@ -51,10 +51,10 @@ Eigen::MatrixXd ar1_cov_irregular(const Eigen::VectorXi& times,
 //'   columns.
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd ar1_cross_cov(const Eigen::VectorXi& times1,
-                              const Eigen::VectorXi& times2,
-                              const double rho,
-                              const double sigma);
+arma::mat ar1_cross_cov(const arma::uvec& times1,
+                        const arma::uvec& times2,
+                        const double rho,
+                        const double sigma);
 
 //' Upper triangular Cholesky decomposition for a stationary Gaussian AR(1)
 //' process, observed at irregularly spaced time points.
@@ -69,9 +69,9 @@ Eigen::MatrixXd ar1_cross_cov(const Eigen::VectorXi& times1,
 //' @return A square matrix with \code{length(times)} rows.
 //' @export
 // [[Rcpp::export]]
-Eigen::MatrixXd ar1_cov_chol_irregular(const Eigen::VectorXi& times,
-                                       const double rho,
-                                       const double sigma);
+arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
+                                 const double rho,
+                                 const double sigma);
 
 //' Sparse precision matrix for a stationary Gaussian AR(1) process, observed at
 //' consecutive timepoints.
@@ -86,9 +86,9 @@ Eigen::MatrixXd ar1_cov_chol_irregular(const Eigen::VectorXi& times,
 //' @return A matrix with \code{n} rows and \code{n} columns.
 //' @export
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double> ar1_prec_consecutive(const int n,
-                                                 const double rho,
-                                                 const double sigma);
+arma::sp_mat ar1_prec_consecutive(const int n,
+                                  const double rho,
+                                  const double sigma);
 
 //' Precision matrix for a stationary Gaussian AR(1) process, observed at
 //' irregularly spaced time points.
@@ -103,9 +103,9 @@ Eigen::SparseMatrix<double> ar1_prec_consecutive(const int n,
 //' @return A square matrix with \code{length(times)} rows.
 //' @export
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double> ar1_prec_irregular(const Eigen::VectorXi& times,
-                                               const double rho,
-                                               const double sigma);
+arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
+                                const double rho,
+                                const double sigma);
 
 //' Upper Cholesky decomposition of a tridiagonal matrix.
 //'
@@ -116,8 +116,8 @@ Eigen::SparseMatrix<double> ar1_prec_irregular(const Eigen::VectorXi& times,
 //' @return A sparse square matrix with the same size as the input matrix.
 //' @export
 // [[Rcpp::export]]
-Eigen::SparseMatrix<double>
-chol_tridiag_upper(const Eigen::SparseMatrix<double>& Q);
+arma::sp_mat
+chol_tridiag_upper(const arma::sp_mat& Q);
 
 
 //' Backsolve with band 1 upper Cholesky.
@@ -127,7 +127,7 @@ chol_tridiag_upper(const Eigen::SparseMatrix<double>& Q);
 //' @return A sparse square matrix with the same size as the input matrix.
 //' @export
 // [[Rcpp::export]]
-Eigen::VectorXd band1_backsolve(const Eigen::SparseMatrix<double>& U,
-                                const Eigen::VectorXd& z);
+arma::vec band1_backsolve(const arma::sp_mat& U,
+                          const arma::vec& z);
 
 #endif
