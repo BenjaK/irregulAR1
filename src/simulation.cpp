@@ -18,40 +18,45 @@ arma::vec ar1_sim_cpp(const int n,
   return x;
 }
 
-arma::vec ar1_sim_irregular_cpp(const arma::uvec times,
-                                const double rho,
-                                const double sigma) {
-  arma::vec z = Rcpp::as<arma::vec>(Rcpp::rnorm(times.size(), 0.0, 1.0));
-  arma::sp_mat U = chol_tridiag_upper(ar1_prec_irregular(times, rho, sigma));
+
+
+arma::vec ar1_sim_irregular_withQ_cpp(const arma::sp_mat& Q) {
+  arma::vec z = Rcpp::as<arma::vec>(Rcpp::rnorm(Q.n_cols, 0.0, 1.0));
+  arma::sp_mat U = chol_tridiag_upper(Q);
   return band1_backsolve(U, z);
 }
 
-// //' Simulate from a stationary Gaussian AR(1) process.
-// //'
-// //' Simulate from a stationary Gaussian AR(1) process at \code{n} consecutive
-// //' time points.
-// //' @param n The number of timepoints to simulate for.
-// //' @param mu A vector of length \code{n} with the expected values at each
-// //'   time point.
-// //' @param rho A real number strictly less than 1 in absolute value.
-// //' @param sigma A positive real number.
-// //' @return A vector of length \code{n} with the process values.
-// //' @keywords internal
-// // [[Rcpp::export]]
-// arma::vec ar1_sim_conditional_cpp(const arma::uvec pred_times,
-//                                   const arma::uvec obs_times,
-//                                   const arma::vec obs_x,
-//                                   const double rho,
-//                                   const double sigma) {
-//   auto N = pred_times.size() + obs_times.size();
-//   arma::uvec all_times = arma::join_cols(pred_times, obs_times);
-//   arma::uvec sorted_times = arma::sort_index(all_times);
-//   // Use sort_index on (pred_times, obs_times)
-//   // Create Q for the sorted vector
-//   // Draw x_all with this Q; separate into x_pred_star and x_obs_star
-//   // Create Sigma_po
-//   // return x_pred_star + Sigma_po * Q * (x_obs - x_obs_star)
-//   arma::vec x_all(N);
-// }
+arma::vec ar1_sim_irregular_cpp(const arma::uvec& times,
+                                const double rho,
+                                const double sigma) {
+  return ar1_sim_irregular_withQ_cpp(ar1_prec_irregular(times, rho, sigma));
+}
+
+arma::vec ar1_sim_conditional_cpp(const arma::uvec& pred_times,
+                                  const arma::uvec& obs_times,
+                                  const arma::vec& x_obs,
+                                  const double rho,
+                                  const double sigma) {
+  auto N = pred_times.size() + obs_times.size();
+
+  // Use sort_index on (pred_times, obs_times)
+  arma::uvec all_times = arma::join_cols(pred_times, obs_times);
+  arma::uvec sorted_times = arma::sort_index(all_times);
+
+  // Create Q for the sorted vector
+  arma::sp_mat Q_o = ar1_prec_irregular(arma::sort(obs_times), rho, sigma);
+
+  // Draw x_all with this Q; separate into x_pred_star and x_obs_star
+  arma::vec x_all = ar1_sim_irregular_cpp(arma::sort(all_times), rho, sigma);
+  x_all = x_all(sorted_times);
+
+  // Create Sigma_po
+  arma::mat Sigma_po = ar1_cross_cov(obs_times, pred_times, rho, sigma);
+
+
+  // return x_pred_star + Sigma_po * Q * (x_obs - x_obs_star)
+  return x_all.head(pred_times.n_elem)
+       + Sigma_po * Q_o * (x_obs - x_all.tail(obs_times.n_elem));
+}
 
 #endif
