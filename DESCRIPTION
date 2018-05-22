@@ -1,12 +1,13 @@
 Package: irregulAR1
 Type: Package
 Title: Functions for irregularly sampled AR(1) processes
-Version: 0.1.0
-Author: Benjamin Allévius
+Version: 1.0.0
+Authors@R: person("Benjamin", "Allévius", email = "benjak@math.su.se",
+                  role = c("aut", "cre"))
 Maintainer: Benjamin Allévius <benjak@math.su.se>
 Description: Simulation and density evaluation of irregularly sampled stationary
   AR(1) processes with Gaussian errors.
-License: GPL
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: Rcpp (>= 0.12.13), Matrix
