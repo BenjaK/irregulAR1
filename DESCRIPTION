@@ -1,6 +1,6 @@
 Package: irregulAR1
 Type: Package
-Title: Functions for irregularly sampled AR(1) processes
+Title: Functions for Irregularly Sampled AR(1) Processes
 Version: 1.0.0
 Authors@R: person("Benjamin", "Allévius", email = "benjak@math.su.se",
                   role = c("aut", "cre"))
