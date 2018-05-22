@@ -69,6 +69,6 @@ ar1_sim_conditional <- function(pred_times, obs_times, x_obs, rho, sigma,
     mu_obs <- rep(mu_obs, length(obs_times))
   }
   return(as.vector(ar1_sim_conditional_cpp(pred_times, mu_pred,
-                                           obs_times, mu_obs, x_obs,
+                                           x_obs, obs_times, mu_obs,
                                            rho, sigma)))
 }
