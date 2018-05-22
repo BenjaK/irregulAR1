@@ -72,13 +72,13 @@ arma::sp_mat ar1_prec_consecutive(const int n,
                                   const double rho,
                                   const double sigma) {
   arma::sp_mat Q(n, n);
-  Q(0, 0) = 1.0;
-  Q(n-1, n-1) = 1.0;
+  Q(0, 0) = 1.0 / std::pow(sigma, 2.0);
   for (int i = 1; i < n; ++i) {
     Q(i, i - 1) = -rho / std::pow(sigma, 2.0);
     Q(i - 1, i) = -rho / std::pow(sigma, 2.0);
     Q(i, i)     = (1.0 + std::pow(rho, 2.0)) / std::pow(sigma, 2.0);
   }
+  Q(n-1, n-1) = 1.0 / std::pow(sigma, 2.0);
   return Q;
 }
 
@@ -115,31 +115,27 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q) {
   arma::vec v(n);
   for (int j = 0; j < n; ++j) {
     int lambda = std::min(j + p, n - 1);
-    // arma::vec Q_sub(lambda - j + 1);
     for (auto k = j, i = 0; k <= lambda; ++k, ++i) {
       v(k) = Q(k, j);
-      // Q_sub(i) = Q(k, j);
     }
-    // v.subvec(j, lambda) = Q_sub;
     for (int k = std::max(0, j - p); k < j; ++k) {
       int i = std::min(k + p, n - 1);
       for (int h = 0; h <= i; ++h) {
         v(h) -= U(k, h) * U(k, j);
       }
-      // v.subvec(j, i) = v.subvec(j, i) - U(k, arma::span(j, i)).t() * U(k, j);
     }
     U(j, arma::span(j, lambda)) = v.subvec(j, lambda).t() / std::sqrt(v(j));
   }
   return U;
 }
 
-arma::vec band1_backsolve(const arma::sp_mat& U,
-                          const arma::vec& z) {
+arma::vec band1_backsolve_cpp(const arma::sp_mat& U,
+                              const arma::vec& z) {
   int m = z.size();
   arma::vec v(m);
   v(m-1) = z(m-1) / U(m-1, m-1);
   for (int i = m - 2; i >= 0; --i) {
-    v(i) = (z(i) - U(i, i + 1)) / U(i, i);
+    v(i) = (z(i) - U(i, i + 1) * v(i+1)) / U(i, i);
   }
   return v;
 }

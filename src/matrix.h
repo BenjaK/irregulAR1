@@ -10,7 +10,7 @@
 //'
 //' Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 //' and \code{sigma}, observed at \code{n} consecutive time points. The process
-//' is assumed to be in stationarity and have Gaussian errors.
+//' is assumed to be in stationarity and to have Gaussian errors.
 //' @param n An integer greater than or equal to 1.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
@@ -26,7 +26,7 @@ arma::mat ar1_cov_consecutive(const int n,
 //'
 //' Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 //' and \code{sigma}, observed at the time points in the vector \code{times}.
-//' The process is assumed to be in stationarity and have Gaussian errors.
+//' The process is assumed to be in stationarity and to have Gaussian errors.
 //' @param times An vector of positive integers, preferably ordered.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
@@ -42,7 +42,7 @@ arma::mat ar1_cov_irregular(const arma::uvec& times,
 //' Creates the cross-covariance matrix of an AR(1) process with parameters
 //' \code{rho} and \code{sigma}, observed at (positive) integer times
 //' \code{times1} and \code{times2}, which may be irregularly spaced. The
-//' process is assumed to be in stationarity and have Gaussian errors.
+//' process is assumed to be in stationarity and to have Gaussian errors.
 //' @param times1 An vector of positive integers, preferably ordered.
 //' @param times2 An vector of positive integers, preferably ordered.
 //' @param rho A real number strictly less than 1 in absolute value.
@@ -62,7 +62,7 @@ arma::mat ar1_cross_cov(const arma::uvec& times1,
 //' Creates the upper triangular Cholesky decomposition matrix of an AR(1)
 //' process with parameters \code{rho} and \code{sigma}, observed at the time
 //' points in the vector \code{times}. The process is assumed to be in
-//' stationarity and have Gaussian errors.
+//' stationarity and to have Gaussian errors.
 //' @param times An vector of positive integers, preferably ordered.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
@@ -78,8 +78,8 @@ arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
 //'
 //' Creates the precision (inverse covariance) matrix of an AR(1) process with
 //' parameters \code{rho} and \code{sigma}, observed at \code{n} consecutive
-//' time points. The process is assumed to be in stationarity and have Gaussian
-//' errors. The matrix is a tridiagonal band matrix and thus sparse.
+//' time points. The process is assumed to be in stationarity and to have
+//' Gaussian errors. The matrix is a tridiagonal band matrix and thus sparse.
 //' @param n An integer greater than or equal to 1.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
@@ -95,8 +95,8 @@ arma::sp_mat ar1_prec_consecutive(const int n,
 //'
 //' Creates the precision (inverse covariance) matrix of an AR(1) process with
 //' parameters \code{rho} and \code{sigma}, observed at the time points in the
-//' vector \code{times}. The process is assumed to be in stationarity and have
-//' Gaussian errors.
+//' vector \code{times}. The process is assumed to be in stationarity and to
+//' have Gaussian errors.
 //' @param times An vector of positive integers, preferably ordered.
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
@@ -122,11 +122,13 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
 //' Backsolve with band 1 upper Cholesky.
 //'
 //' Backsolve with band 1 upper Cholesky.
-//' @param Q A square tridiagonal matrix.
-//' @return A sparse square matrix with the same size as the input matrix.
-//' @export
+//' @param U An upper triangular square matrix with non-zero entries only on the
+//'   main diagonal and the first superdiagonal.
+//' @param z A vector with as many elements as the number of rows of U.
+//' @return A vector.
+//' @keywords internal
 // [[Rcpp::export]]
-arma::vec band1_backsolve(const arma::sp_mat& U,
-                          const arma::vec& z);
+arma::vec band1_backsolve_cpp(const arma::sp_mat& U,
+                              const arma::vec& z);
 
 #endif

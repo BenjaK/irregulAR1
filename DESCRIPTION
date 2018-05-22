@@ -4,10 +4,12 @@ Title: Functions for irregularly sampled AR(1) processes
 Version: 0.1.0
 Author: Benjamin Allévius
 Maintainer: Benjamin Allévius <benjak@math.su.se>
-Description: Simulation and density evaluation of irregularly sampled stationary AR(1) processes with Gaussian errors.
+Description: Simulation and density evaluation of irregularly sampled stationary
+  AR(1) processes with Gaussian errors.
 License: GPL
 Encoding: UTF-8
 LazyData: true
 Imports: Rcpp (>= 0.12.13), Matrix
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 6.0.1
+Suggests: testthat

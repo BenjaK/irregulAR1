@@ -6,6 +6,21 @@
 
 using namespace Rcpp;
 
+// ar1_lpdf_cpp
+double ar1_lpdf_cpp(const arma::vec& x, const arma::vec& mu, const arma::uvec& times, const double rho, const double sigma);
+RcppExport SEXP _irregulAR1_ar1_lpdf_cpp(SEXP xSEXP, SEXP muSEXP, SEXP timesSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::vec& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ar1_lpdf_cpp(x, mu, times, rho, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
 // ar1_cov_consecutive
 arma::mat ar1_cov_consecutive(const int n, const double rho, const double sigma);
 RcppExport SEXP _irregulAR1_ar1_cov_consecutive(SEXP nSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
@@ -96,15 +111,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// band1_backsolve
-arma::vec band1_backsolve(const arma::sp_mat& U, const arma::vec& z);
-RcppExport SEXP _irregulAR1_band1_backsolve(SEXP USEXP, SEXP zSEXP) {
+// band1_backsolve_cpp
+arma::vec band1_backsolve_cpp(const arma::sp_mat& U, const arma::vec& z);
+RcppExport SEXP _irregulAR1_band1_backsolve_cpp(SEXP USEXP, SEXP zSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type U(USEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type z(zSEXP);
-    rcpp_result_gen = Rcpp::wrap(band1_backsolve(U, z));
+    rcpp_result_gen = Rcpp::wrap(band1_backsolve_cpp(U, z));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -122,20 +137,38 @@ BEGIN_RCPP
 END_RCPP
 }
 // ar1_sim_irregular_cpp
-arma::vec ar1_sim_irregular_cpp(const arma::uvec times, const double rho, const double sigma);
+arma::vec ar1_sim_irregular_cpp(const arma::uvec& times, const double rho, const double sigma);
 RcppExport SEXP _irregulAR1_ar1_sim_irregular_cpp(SEXP timesSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::uvec >::type times(timesSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type times(timesSEXP);
     Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
     rcpp_result_gen = Rcpp::wrap(ar1_sim_irregular_cpp(times, rho, sigma));
     return rcpp_result_gen;
 END_RCPP
 }
+// ar1_sim_conditional_cpp
+arma::vec ar1_sim_conditional_cpp(const arma::uvec& pred_times, const arma::vec& mu_pred, const arma::vec& x_obs, const arma::uvec& obs_times, const arma::vec& mu_obs, const double rho, const double sigma);
+RcppExport SEXP _irregulAR1_ar1_sim_conditional_cpp(SEXP pred_timesSEXP, SEXP mu_predSEXP, SEXP x_obsSEXP, SEXP obs_timesSEXP, SEXP mu_obsSEXP, SEXP rhoSEXP, SEXP sigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::uvec& >::type pred_times(pred_timesSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type mu_pred(mu_predSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type x_obs(x_obsSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type obs_times(obs_timesSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type mu_obs(mu_obsSEXP);
+    Rcpp::traits::input_parameter< const double >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< const double >::type sigma(sigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(ar1_sim_conditional_cpp(pred_times, mu_pred, x_obs, obs_times, mu_obs, rho, sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_irregulAR1_ar1_lpdf_cpp", (DL_FUNC) &_irregulAR1_ar1_lpdf_cpp, 5},
     {"_irregulAR1_ar1_cov_consecutive", (DL_FUNC) &_irregulAR1_ar1_cov_consecutive, 3},
     {"_irregulAR1_ar1_cov_irregular", (DL_FUNC) &_irregulAR1_ar1_cov_irregular, 3},
     {"_irregulAR1_ar1_cross_cov", (DL_FUNC) &_irregulAR1_ar1_cross_cov, 4},
@@ -143,9 +176,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_irregulAR1_ar1_prec_consecutive", (DL_FUNC) &_irregulAR1_ar1_prec_consecutive, 3},
     {"_irregulAR1_ar1_prec_irregular", (DL_FUNC) &_irregulAR1_ar1_prec_irregular, 3},
     {"_irregulAR1_chol_tridiag_upper", (DL_FUNC) &_irregulAR1_chol_tridiag_upper, 1},
-    {"_irregulAR1_band1_backsolve", (DL_FUNC) &_irregulAR1_band1_backsolve, 2},
+    {"_irregulAR1_band1_backsolve_cpp", (DL_FUNC) &_irregulAR1_band1_backsolve_cpp, 2},
     {"_irregulAR1_ar1_sim_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_cpp, 3},
     {"_irregulAR1_ar1_sim_irregular_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_irregular_cpp, 3},
+    {"_irregulAR1_ar1_sim_conditional_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_conditional_cpp, 7},
     {NULL, NULL, 0}
 };
 
