@@ -1,3 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 LICENCE.md
+^\.travis\.yml$
+^README\.Rmd$
+^README-.*\.png$
+cran-comments\.md
