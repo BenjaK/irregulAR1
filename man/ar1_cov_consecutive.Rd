@@ -20,5 +20,5 @@ A matrix with \code{n} rows and \code{n} columns.
 \description{
 Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 and \code{sigma}, observed at \code{n} consecutive time points. The process
-is assumed to be in stationarity and have Gaussian errors.
+is assumed to be in stationarity and to have Gaussian errors.
 }

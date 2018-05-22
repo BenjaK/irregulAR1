@@ -20,6 +20,6 @@ A matrix with \code{n} rows and \code{n} columns.
 \description{
 Creates the precision (inverse covariance) matrix of an AR(1) process with
 parameters \code{rho} and \code{sigma}, observed at \code{n} consecutive
-time points. The process is assumed to be in stationarity and have Gaussian
-errors. The matrix is a tridiagonal band matrix and thus sparse.
+time points. The process is assumed to be in stationarity and to have
+Gaussian errors. The matrix is a tridiagonal band matrix and thus sparse.
 }

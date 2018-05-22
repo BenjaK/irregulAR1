@@ -20,5 +20,5 @@ A square matrix with \code{length(times)} rows.
 \description{
 Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 and \code{sigma}, observed at the time points in the vector \code{times}.
-The process is assumed to be in stationarity and have Gaussian errors.
+The process is assumed to be in stationarity and to have Gaussian errors.
 }

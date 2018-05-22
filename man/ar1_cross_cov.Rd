@@ -23,5 +23,5 @@ A matrix with \code{length(times2)} rows and \code{length(times1)}
 Creates the cross-covariance matrix of an AR(1) process with parameters
 \code{rho} and \code{sigma}, observed at (positive) integer times
 \code{times1} and \code{times2}, which may be irregularly spaced. The
-process is assumed to be in stationarity and have Gaussian errors.
+process is assumed to be in stationarity and to have Gaussian errors.
 }
