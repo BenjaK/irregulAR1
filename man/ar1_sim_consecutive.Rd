@@ -12,6 +12,9 @@ ar1_sim_consecutive(n, rho, sigma, mu = 0)
 \item{rho}{A real number strictly less than 1 in absolute value.}
 
 \item{sigma}{A positive real number.}
+
+\item{mu}{A vector of expected values with length \code{n}, or a scalar
+(default equal to 0).}
 }
 \value{
 A vector of length \code{n} with the process values.

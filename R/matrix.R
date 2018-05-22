@@ -6,6 +6,7 @@
 #'   main diagonal and the first superdiagonal.
 #' @param z A vector with as many elements as the number of rows of U.
 #' @return A vector.
+#' @importFrom Matrix as
 #' @export
 band1_backsolve <- function(U, z) {
   if (nrow(U) != ncol(U)) stop("U must be square.")

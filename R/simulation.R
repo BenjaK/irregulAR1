@@ -7,6 +7,8 @@
 #' @param n The number of timepoints to simulate for.
 #' @param rho A real number strictly less than 1 in absolute value.
 #' @param sigma A positive real number.
+#' @param mu A vector of expected values with length \code{n}, or a scalar
+#'   (default equal to 0).
 #' @return A vector of length \code{n} with the process values.
 #' @export
 ar1_sim_consecutive <- function(n, rho, sigma, mu = 0) {
@@ -25,6 +27,8 @@ ar1_sim_consecutive <- function(n, rho, sigma, mu = 0) {
 #' @param times The time points to simulate for.
 #' @param rho A real number strictly less than 1 in absolute value.
 #' @param sigma A positive real number.
+#' @param mu A vector of expected values with length \code{length(times)}, or a
+#'   scalar (default equal to 0).
 #' @return A vector of length \code{n} with the process values.
 #' @export
 ar1_sim_irregular <- function(times, rho, sigma, mu = 0) {
