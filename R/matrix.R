@@ -13,7 +13,8 @@ band1_backsolve <- function(U, z) {
   if (nrow(U) != length(z)) stop("The dimensions of U and z must match.")
   if (!(class(U) %in% c("dgCMatrix", "dgRMatrix", "dgTMatrix", "dsCMatrix",
                         "dtCMatrix", "nsparseMatrix"))) {
-    U <- as(U, "CsparseMatrix")
+    # U <- methods::as(U, "CsparseMatrix")
+    as(U, "CsparseMatrix")
   }
   return(band1_backsolve_cpp(U, z))
 }
