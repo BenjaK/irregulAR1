@@ -7,6 +7,12 @@ ar1_cov_xy <- function(obs_idx, pred_idx = obs_idx, rho, sigma) {
                                     function(x, y) abs(x-y))
 }
 
+Phi <- function(M) {
+  Matrix::diag(M) <- Matrix::diag(M) / 2
+  M[lower.tri(M, diag = FALSE)] <- 0
+  return(M)
+}
+
 test_that("ar1_cov_consecutive", {
   n <- 5
   s <- 3
@@ -94,4 +100,53 @@ test_that("band1_backsolve", {
   x1 <- irregulAR1::band1_backsolve(U, z)
   x2 <- solve(U, z)
   expect_equal(as.vector(x1), as.vector(x2))
+})
+
+test_that("band1_backsolve_mat", {
+  t <- c(1, 3:4, 6, 8)
+  r <- 0.5
+  s <- 1
+  Q <- ar1_prec_irregular(t, r, s)
+  U <- irregulAR1::chol_tridiag_upper(Q)
+  L <- Matrix::t(U)
+  dQ <- dprec_drho(t, r, s)
+  B1 <- irregulAR1:::band1_backsolve_mat(L, dQ)
+  B2 <- Matrix::solve(L, dQ)
+  expect_equal(B1, B2, check.attributes = FALSE)
+})
+
+test_that("mult_U_band1U", {
+  t <- c(1, 3:4, 6, 8)
+  r <- 0.5
+  s <- 1
+  Q <- ar1_prec_irregular(t, r, s)
+  U <- irregulAR1::chol_tridiag_upper(Q)
+  L <- t(U)
+  dQ <- dprec_drho(t, r, s)
+  B <- irregulAR1:::band1_backsolve_mat(L, dQ)
+  A <- t(irregulAR1:::band1_backsolve_mat(L, t(B)))
+
+  X1 <- irregulAR1:::mult_U_band1U(A, U)
+  X2 <- A %*% U
+  expect_equal(X1, X2, check.attributes = FALSE)
+})
+
+test_that("dprechol_drho", {
+  t <- c(1, 3:4, 6, 8)
+  r <- 0.5
+  s <- 1
+  Q <- ar1_prec_irregular(t, r, s)
+  U <- chol_tridiag_upper(Q)
+  L <- t(U)
+  dQ <- dprec_drho(t, r, s)
+
+  X1 <- dprechol_drho(U, dQ)
+
+
+  B <- irregulAR1:::band1_backsolve_mat(L, dQ)
+  A <- t(irregulAR1:::band1_backsolve_mat(L, t(B)))
+
+  dU1 <- irregulAR1:::mult_U_band1U(A, U)
+  dU2 <- Phi(A) %*% U
+  expect_equal(dU1, dU2, check.attributes = FALSE)
 })
