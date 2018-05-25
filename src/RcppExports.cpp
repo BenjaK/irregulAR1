@@ -173,15 +173,15 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// dprechol_drho
-arma::sp_mat dprechol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
-RcppExport SEXP _irregulAR1_dprechol_drho(SEXP USEXP, SEXP dQSEXP) {
+// dprecchol_drho
+arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
+RcppExport SEXP _irregulAR1_dprecchol_drho(SEXP USEXP, SEXP dQSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type U(USEXP);
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type dQ(dQSEXP);
-    rcpp_result_gen = Rcpp::wrap(dprechol_drho(U, dQ));
+    rcpp_result_gen = Rcpp::wrap(dprecchol_drho(U, dQ));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -243,7 +243,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_irregulAR1_band1_backsolve_mat", (DL_FUNC) &_irregulAR1_band1_backsolve_mat, 2},
     {"_irregulAR1_dprec_drho", (DL_FUNC) &_irregulAR1_dprec_drho, 3},
     {"_irregulAR1_mult_U_band1U", (DL_FUNC) &_irregulAR1_mult_U_band1U, 2},
-    {"_irregulAR1_dprechol_drho", (DL_FUNC) &_irregulAR1_dprechol_drho, 2},
+    {"_irregulAR1_dprecchol_drho", (DL_FUNC) &_irregulAR1_dprecchol_drho, 2},
     {"_irregulAR1_ar1_sim_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_cpp, 3},
     {"_irregulAR1_ar1_sim_irregular_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_irregular_cpp, 3},
     {"_irregulAR1_ar1_sim_conditional_cpp", (DL_FUNC) &_irregulAR1_ar1_sim_conditional_cpp, 7},

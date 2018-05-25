@@ -250,7 +250,7 @@ arma::sp_mat mult_U_band1U(const arma::sp_mat& A, const arma::sp_mat U) {
   return X;
 }
 
-arma::sp_mat dprechol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ) {
+arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ) {
   arma::sp_mat B = band1_backsolve_mat(U.t(), dQ).t();
   arma::sp_mat A = band1_backsolve_mat(U.t(), B).t();
   for (int i = 0; i < A.n_cols; ++i) A(i, i) *= 0.5;

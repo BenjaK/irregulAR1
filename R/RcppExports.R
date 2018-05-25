@@ -261,9 +261,9 @@ mult_U_band1U <- function(A, U) {
 #' s <- 1
 #' U <- ar1_prec_chol_irregular(t, r, s)
 #' dQ <- dprec_drho(t, r, s)
-#' (dU <- dprechol_drho(U, dQ))
-dprechol_drho <- function(U, dQ) {
-    .Call(`_irregulAR1_dprechol_drho`, U, dQ)
+#' (dU <- dprecchol_drho(U, dQ))
+dprecchol_drho <- function(U, dQ) {
+    .Call(`_irregulAR1_dprecchol_drho`, U, dQ)
 }
 
 #' Simulate from a stationary Gaussian AR(1) process.

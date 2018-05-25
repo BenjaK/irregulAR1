@@ -131,7 +131,7 @@ test_that("mult_U_band1U", {
   expect_equal(X1, X2, check.attributes = FALSE)
 })
 
-test_that("dprechol_drho", {
+test_that("dprecchol_drho", {
   t <- c(1, 3:4, 6, 8)
   r <- 0.5
   s <- 1
@@ -140,7 +140,7 @@ test_that("dprechol_drho", {
   L <- t(U)
   dQ <- dprec_drho(t, r, s)
 
-  X1 <- dprechol_drho(U, dQ)
+  X1 <- dprecchol_drho(U, dQ)
 
 
   B <- irregulAR1:::band1_backsolve_mat(L, dQ)

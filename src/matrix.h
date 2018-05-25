@@ -258,8 +258,8 @@ arma::sp_mat mult_U_band1U(const arma::sp_mat& A, const arma::sp_mat U);
 //' s <- 1
 //' U <- ar1_prec_chol_irregular(t, r, s)
 //' dQ <- dprec_drho(t, r, s)
-//' (dU <- dprechol_drho(U, dQ))
+//' (dU <- dprecchol_drho(U, dQ))
 // [[Rcpp::export]]
-arma::sp_mat dprechol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
+arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
 
 #endif
