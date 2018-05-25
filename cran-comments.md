@@ -2,7 +2,8 @@
 
 Initial release of this package. Function documentation has been updated with
 examples and a reference for the algorithms used has been added to the
-`DESCRIPTION`.
+`DESCRIPTION`, according to requests from Swetlana Herbrandt after first 
+submission.
 
 ## Test environments
 * local Kubuntu 16.04 install, R 3.4.4
