@@ -24,3 +24,14 @@ A scalar, the log density.
 Evaluate the log-density of a stationary Gaussian AR(1) process, observed at
 times \code{times} taking values \code{x}.
 }
+\examples{
+x <- rnorm(5) + 1:5
+t <- c(1, 3, 5:6, 10)
+rho <- 0.5
+sigma <- 1
+# zero mean
+ar1_lpdf(x, t, rho, sigma)
+# means equal times
+mu <- t
+ar1_lpdf(x + mu, t, rho, sigma, mu)
+}

@@ -25,3 +25,10 @@ Creates the cross-covariance matrix of an AR(1) process with parameters
 \code{times1} and \code{times2}, which may be irregularly spaced. The
 process is assumed to be in stationarity and to have Gaussian errors.
 }
+\examples{
+times1 <- c(1, 3, 6)
+times2 <- c(2, 4, 8:9)
+rho <- 0.5
+sigma <- 1
+ar1_cross_cov(times1, times2, rho, sigma)
+}

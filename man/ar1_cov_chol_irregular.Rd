@@ -3,7 +3,7 @@
 \name{ar1_cov_chol_irregular}
 \alias{ar1_cov_chol_irregular}
 \title{Upper triangular Cholesky decomposition for a stationary Gaussian AR(1)
-process, observed at irregularly spaced time points.}
+process covariance matrix, observed at irregularly spaced time points.}
 \usage{
 ar1_cov_chol_irregular(times, rho, sigma)
 }
@@ -18,8 +18,14 @@ ar1_cov_chol_irregular(times, rho, sigma)
 A square matrix with \code{length(times)} rows.
 }
 \description{
-Creates the upper triangular Cholesky decomposition matrix of an AR(1)
+Creates the upper Cholesky triangle of the covariance matrix of an AR(1)
 process with parameters \code{rho} and \code{sigma}, observed at the time
 points in the vector \code{times}. The process is assumed to be in
 stationarity and to have Gaussian errors.
+}
+\examples{
+times <- c(1, 4:5, 7)
+rho <- 0.5
+sigma <- 1
+ar1_cov_chol_irregular(times, rho, sigma)
 }

@@ -22,3 +22,11 @@ A vector of length \code{n} with the process values.
 \description{
 Simulate from a stationary Gaussian AR(1) process at irregular times.
 }
+\examples{
+times <- c(3, 5:7, 10)
+rho <- 0.5
+sigma <- 1
+mu <- seq_along(times)
+ar1_sim_irregular(times, rho, sigma)
+ar1_sim_irregular(times, rho, sigma, mu)
+}

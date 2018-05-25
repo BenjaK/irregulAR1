@@ -22,3 +22,9 @@ Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 and \code{sigma}, observed at \code{n} consecutive time points. The process
 is assumed to be in stationarity and to have Gaussian errors.
 }
+\examples{
+n <- 5
+rho <- 0.5
+sigma <- 1
+ar1_cov_consecutive(n, rho, sigma)
+}

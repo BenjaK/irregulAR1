@@ -22,3 +22,9 @@ Creates the covariance matrix of an AR(1) process with parameters \code{rho}
 and \code{sigma}, observed at the time points in the vector \code{times}.
 The process is assumed to be in stationarity and to have Gaussian errors.
 }
+\examples{
+times <- c(1, 4:5, 7)
+rho <- 0.5
+sigma <- 1
+ar1_cov_irregular(times, rho, sigma)
+}

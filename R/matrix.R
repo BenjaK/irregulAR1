@@ -7,7 +7,13 @@
 #' @param z A vector with as many elements as the number of rows of U.
 #' @return A vector.
 #' @importFrom methods as
+#' @importFrom Matrix t
 #' @export
+#' @examples
+#' Q <- ar1_prec_irregular(c(1, 3:4, 6), 0.5, 1)
+#' U <- chol_tridiag_upper(Q)
+#' z <- rnorm(nrow(U))
+#' band1_backsolve(U, z)
 band1_backsolve <- function(U, z) {
   if (nrow(U) != ncol(U)) stop("U must be square.")
   if (nrow(U) != length(z)) stop("The dimensions of U and z must match.")
@@ -16,5 +22,5 @@ band1_backsolve <- function(U, z) {
     # U <- methods::as(U, "CsparseMatrix")
     as(U, "CsparseMatrix")
   }
-  return(band1_backsolve_cpp(U, z))
+  return(band1_backsolve_vec(U, z))
 }

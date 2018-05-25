@@ -23,3 +23,11 @@ A vector of length \code{n} with the process values.
 Simulate from a stationary Gaussian AR(1) process at \code{n} consecutive
 time points.
 }
+\examples{
+n <- 10
+rho <- 0.5
+sigma <- 1
+mu <- 1:10
+ar1_sim_consecutive(n, rho, sigma)
+ar1_sim_consecutive(n, rho, sigma, mu)
+}
