@@ -24,7 +24,7 @@ arma::vec ar1_sim_irregular_cpp(const arma::uvec& times,
   arma::sp_mat Q = ar1_prec_irregular(times, rho, sigma);
   arma::vec z = Rcpp::as<arma::vec>(Rcpp::rnorm(Q.n_cols, 0.0, 1.0));
   arma::sp_mat U = chol_tridiag_upper(Q);
-  return band1_backsolve_cpp(U, z);
+  return band1_backsolve_vec(U, z);
 }
 
 arma::vec ar1_sim_conditional_cpp(const arma::uvec& pred_times,
