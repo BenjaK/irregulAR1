@@ -28,3 +28,4 @@ rho <- 0.5
 sigma <- 1
 ar1_cov_consecutive(n, rho, sigma)
 }
+\keyword{internal}

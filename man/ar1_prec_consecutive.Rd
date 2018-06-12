@@ -30,3 +30,4 @@ rho <- 0.5
 sigma <- 1
 ar1_prec_consecutive(n, rho, sigma)
 }
+\keyword{internal}

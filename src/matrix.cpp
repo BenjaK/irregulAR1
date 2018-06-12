@@ -40,6 +40,35 @@ arma::mat ar1_cov_irregular(const arma::uvec& times,
   return A;
 }
 
+arma::mat ar1_cov(const arma::uvec& times,
+                  const double rho,
+                  const double sigma) {
+  if (times.n_elem == 1) return ar1_cov_consecutive(times[0], rho, sigma);
+  return ar1_cov_irregular(times, rho, sigma);
+}
+
+arma::mat dcov_drho(const arma::uvec& times,
+                    const double rho,
+                    const double sigma) {
+  auto m = times.size();
+  arma::mat A(m, m);
+  double t1, t2, dt;
+  double rho_sq = std::pow(rho, 2.0);
+  for (int j = 0; j < m - 1; ++j) {
+    t1 = static_cast<double>(times(j));
+    A(j, j) = 2.0 * rho * std::pow(1.0 - rho_sq, -2.0);
+    for (int i = j + 1; i < times.size(); ++i) {
+      t2 = static_cast<double>(times(i));
+      dt = std::abs(t2 - t1);
+      A(i, j) = std::pow(rho, dt) * (dt - (dt - 2) * rho_sq)
+              * std::pow(1.0 - rho_sq, -2.0);
+      A(j, i) = A(i, j);
+    }
+  }
+  A(m-1, m-1) = 2.0 * rho * std::pow(1 - rho_sq, -2.0);
+  return A;
+}
+
 arma::mat ar1_cross_cov(const arma::uvec& times1,
                         const arma::uvec& times2,
                         const double rho,
@@ -60,10 +89,10 @@ arma::mat ar1_cross_cov(const arma::uvec& times1,
   return A;
 }
 
-arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
-                                 const double rho,
-                                 const double sigma) {
-  return arma::chol(ar1_cov_irregular(times, rho, sigma));
+arma::mat ar1_cov_chol(const arma::uvec& times,
+                       const double rho,
+                       const double sigma) {
+  return arma::chol(ar1_cov(times, rho, sigma));
 }
 
 // Precision matrices ----------------------------------------------------------
@@ -108,6 +137,13 @@ arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
   return Q;
 }
 
+arma::sp_mat ar1_prec(const arma::uvec& times,
+                      const double rho,
+                      const double sigma) {
+  if (times.n_elem == 1) return ar1_prec_consecutive(times(0), rho, sigma);
+  return ar1_prec_irregular(times, rho, sigma);
+}
+
 arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q) {
   int n = Q.n_rows;
   arma::sp_mat U(n, n);
@@ -129,10 +165,10 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q) {
   return U;
 }
 
-arma::sp_mat ar1_prec_chol_irregular(const arma::uvec& times,
+arma::sp_mat ar1_prec_chol(const arma::uvec& times,
                                      const double rho,
                                      const double sigma) {
-  return chol_tridiag_upper(ar1_prec_irregular(times, rho, sigma));
+  return chol_tridiag_upper(ar1_prec(times, rho, sigma));
 }
 
 arma::vec band1_backsolve_vec(const arma::sp_mat& U,
@@ -255,4 +291,11 @@ arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ) {
   arma::sp_mat A = band1_backsolve_mat(U.t(), B).t();
   for (int i = 0; i < A.n_cols; ++i) A(i, i) *= 0.5;
   return mult_U_band1U(A, U);
+}
+
+arma::mat dcovchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ) {
+  arma::sp_mat B = band1_backsolve_mat(U.t(), dQ).t();
+  arma::sp_mat A = band1_backsolve_mat(U.t(), B).t();
+  for (int i = 0; i < A.n_cols; ++i) A(i, i) *= 0.5;
+  return arma::spsolve(-U, arma::mat(A), "lapack");
 }

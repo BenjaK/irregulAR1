@@ -15,7 +15,7 @@
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
 //' @return A matrix with \code{n} rows and \code{n} columns.
-//' @export
+//' @keywords internal
 //' @examples
 //' n <- 5
 //' rho <- 0.5
@@ -36,7 +36,7 @@ arma::mat ar1_cov_consecutive(const int n,
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
 //' @return A square matrix with \code{length(times)} rows.
-//' @export
+//' @keywords internal
 //' @examples
 //' times <- c(1, 4:5, 7)
 //' rho <- 0.5
@@ -46,6 +46,31 @@ arma::mat ar1_cov_consecutive(const int n,
 arma::mat ar1_cov_irregular(const arma::uvec& times,
                             const double rho,
                             const double sigma);
+
+//' Covariance matrix for a stationary Gaussian AR(1) process.
+//'
+//' Creates the covariance matrix of an AR(1) process with parameters \code{rho}
+//' and \code{sigma}, observed at the time points in the vector \code{times}.
+//' The process is assumed to be in stationarity and to have Gaussian errors.
+//' If times is a vector of length 1, and its value is a positive integer
+//' \code{n}, then the covariance matrix for \code{n} consecutive time points
+//' is created instead.
+//' @param times An vector of positive integers, preferably ordered.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A square matrix with \code{length(times)} rows if \code{times} has
+//'   more than 1 element. Otherwise, a matrix with \code{length(times[1])}
+//'   elements.
+//' @export
+//' @examples
+//' times <- c(1, 4:5, 7)
+//' rho <- 0.5
+//' sigma <- 1
+//' ar1_cov(times, rho, sigma)
+// [[Rcpp::export]]
+arma::mat ar1_cov(const arma::uvec& times,
+                  const double rho,
+                  const double sigma);
 
 //' Cross-covariance matrix of a stationary Gaussian AR(1) process.
 //'
@@ -73,7 +98,7 @@ arma::mat ar1_cross_cov(const arma::uvec& times1,
                         const double sigma);
 
 //' Upper triangular Cholesky decomposition for a stationary Gaussian AR(1)
-//' process covariance matrix, observed at irregularly spaced time points.
+//' process covariance matrix.
 //'
 //' Creates the upper Cholesky triangle of the covariance matrix of an AR(1)
 //' process with parameters \code{rho} and \code{sigma}, observed at the time
@@ -88,11 +113,11 @@ arma::mat ar1_cross_cov(const arma::uvec& times1,
 //' times <- c(1, 4:5, 7)
 //' rho <- 0.5
 //' sigma <- 1
-//' ar1_cov_chol_irregular(times, rho, sigma)
+//' ar1_cov_chol(times, rho, sigma)
 // [[Rcpp::export]]
-arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
-                                 const double rho,
-                                 const double sigma);
+arma::mat ar1_cov_chol(const arma::uvec& times,
+                       const double rho,
+                       const double sigma);
 
 //' Sparse precision matrix for a stationary Gaussian AR(1) process, observed at
 //' consecutive timepoints.
@@ -105,7 +130,7 @@ arma::mat ar1_cov_chol_irregular(const arma::uvec& times,
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
 //' @return A matrix with \code{n} rows and \code{n} columns.
-//' @export
+//' @keywords internal
 //' @examples
 //' library(Matrix)
 //' n <- 5
@@ -128,7 +153,7 @@ arma::sp_mat ar1_prec_consecutive(const int n,
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
 //' @return A square matrix with \code{length(times)} rows.
-//' @export
+//' @keywords internal
 //' @examples
 //' library(Matrix)
 //' times <- c(1, 4:5, 7)
@@ -139,6 +164,29 @@ arma::sp_mat ar1_prec_consecutive(const int n,
 arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
                                 const double rho,
                                 const double sigma);
+
+//' Precision matrix for a stationary Gaussian AR(1) process, observed at
+//' irregularly spaced time points.
+//'
+//' Creates the precision (inverse covariance) matrix of an AR(1) process with
+//' parameters \code{rho} and \code{sigma}, observed at the time points in the
+//' vector \code{times}. The process is assumed to be in stationarity and to
+//' have Gaussian errors.
+//' @param times An vector of positive integers, preferably ordered.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A square matrix with \code{length(times)} rows.
+//' @export
+//' @examples
+//' library(Matrix)
+//' times <- c(1, 4:5, 7)
+//' rho <- 0.5
+//' sigma <- 1
+//' ar1_prec(times, rho, sigma)
+// [[Rcpp::export]]
+arma::sp_mat ar1_prec(const arma::uvec& times,
+                      const double rho,
+                      const double sigma);
 
 //' Upper Cholesky decomposition of a tridiagonal matrix.
 //'
@@ -177,9 +225,9 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
 //' sigma <- 1
 //' ar1_prec_chol_irregular(times, rho, sigma)
 // [[Rcpp::export]]
-arma::sp_mat ar1_prec_chol_irregular(const arma::uvec& times,
-                                     const double rho,
-                                     const double sigma);
+arma::sp_mat ar1_prec_chol(const arma::uvec& times,
+                           const double rho,
+                           const double sigma);
 
 
 //' Backsolve with band 1 upper Cholesky.
@@ -230,6 +278,27 @@ arma::sp_mat dprec_drho(const arma::uvec& times,
                         const double rho,
                         const double sigma);
 
+//' Derivative of the covariance matrix for a stationary Gaussian AR(1) process.
+//'
+//' Creates the derivate of the covariance matrix of an AR(1) process with
+//' respect to the parameter \code{rho}. The process has been observed at the
+//' time points in the vector \code{times} and is assumed to be in stationarity,
+//' and to have Gaussian errors.
+//' @param times An vector of positive integers, preferably ordered.
+//' @param rho A real number strictly less than 1 in absolute value.
+//' @param sigma A positive real number.
+//' @return A square matrix with \code{length(times)} rows.
+//' @export
+//' @examples
+//' times <- c(1, 4:5, 7)
+//' rho <- 0.5
+//' sigma <- 1
+//' dcov_drho(times, rho, sigma)
+// [[Rcpp::export]]
+arma::mat dcov_drho(const arma::uvec& times,
+                    const double rho,
+                    const double sigma);
+
 //' Multiply an upper triangular matrix with a band 1 upper triangular matrix.
 //'
 //' Multiply an upper triangular matrix with a band 1 upper triangular matrix.
@@ -261,5 +330,26 @@ arma::sp_mat mult_U_band1U(const arma::sp_mat& A, const arma::sp_mat U);
 //' (dU <- dprecchol_drho(U, dQ))
 // [[Rcpp::export]]
 arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
+
+//' Derivative of the inverse upper Cholesky triangle of the precision matrix of
+//' a stationary Gaussian AR(1) process.
+//'
+//' Derivative of the inverse upper Cholesky triangle of the precision matrix of
+//' of an AR(1) process with respect to the parameter \code{rho}.
+//' @param U The upper Cholesky triangle of the precision matrix \code{Q} of the
+//'   AR(1) process.
+//' @param dQ The derivative of the precision matrix \code{Q} with respect to
+//'   the correlation parameter \code{rho}.
+//' @return A matrix of the same dimensions as \code{U}.
+//' @keywords internal
+//' @examples
+//' t <- c(1, 3:4, 6, 8)
+//' r <- 0.5
+//' s <- 1
+//' U <- ar1_prec_chol_irregular(t, r, s)
+//' dQ <- dprec_drho(t, r, s)
+//' (dU <- dcovchol_drho(U, dQ))
+// [[Rcpp::export]]
+arma::mat dcovchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
 
 #endif
