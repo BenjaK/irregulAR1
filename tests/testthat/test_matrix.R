@@ -13,11 +13,26 @@ Phi <- function(M) {
   return(M)
 }
 
-test_that("ar1_cov_consecutive", {
+dSigma_drho <- function(times, rho, sigma) {
+  N <- length(times)
+  out <- matrix(NA, N, N)
+  for (j in seq_len(N - 1)) {
+    out[j, j] <- 2 * rho / (1 - rho^2)^2 * sigma^2
+    for (i in (j+1):N) {
+      dt <- abs(times[i] - times[j])
+      out[i, j] <- rho^(dt - 1) * (dt - (dt - 2) * rho^2) / (1 - rho^2)^2 * sigma^2
+      out[j, i] <- out[i, j]
+    }
+  }
+  out[N, N] <- 2 * rho / (1 - rho^2)^2 * sigma^2
+  return(out)
+}
+
+test_that("ar1_cov (consecutive)", {
   n <- 5
   s <- 3
   r <- 0.5
-  x <- ar1_cov_consecutive(n, r, s)
+  x <- ar1_cov(n, r, s)
   y <- matrix(0, n, n)
   for (i in 1:n) {
     for (j in 1:n) {
@@ -28,12 +43,12 @@ test_that("ar1_cov_consecutive", {
   expect_equal(x, y)
 })
 
-test_that("ar1_cov_irregular", {
+test_that("ar1_cov (irregular)", {
   s <- 3
   r <- 0.5
   t <- c(1, 3, 6:7, 19)
   S1 <- ar1_cov_xy(t, t, r, s)
-  S2 <- ar1_cov_irregular(t, r, s)
+  S2 <- ar1_cov(t, r, s)
   expect_equal(S2, S1)
 })
 
@@ -47,16 +62,24 @@ test_that("ar1_cross_cov", {
   expect_equal(S2, S1)
 })
 
-test_that("ar1_cov_chol_irregular", {
+test_that("ar1_cov_chol", {
   s <- 3
   r <- 0.5
   t1 <- c(1, 3, 6:7, 19)
   t2 <- c(2, 5, 11:14)
   U1 <- chol(ar1_cov_xy(t1, t1, r, s))
-  U2 <- ar1_cov_chol_irregular(t1, r, s)
+  U2 <- ar1_cov_chol(t1, r, s)
   expect_equal(U2, U1)
 })
 
+test_that("dcov_drho", {
+  s <- 3
+  r <- 0.5
+  t <- c(1, 3, 6:7, 19)
+  dS1 <- dcov_drho(t, r, s)
+  dS2 <- dSigma_drho(t, r, s)
+  expect_equal(dS2, dS1)
+})
 
 test_that("ar1_prec_consecutive", {
   n <- 5

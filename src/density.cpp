@@ -10,7 +10,7 @@ double ar1_lpdf_cpp(const arma::vec& x,
                     const arma::uvec& times,
                     const double rho,
                     const double sigma) {
-  arma::sp_mat Q = ar1_prec_irregular(times, rho, sigma);
+  arma::sp_mat Q = ar1_prec(times, rho, sigma);
   arma::sp_mat U = chol_tridiag_upper(Q);
 
   double diag_sum = 0.0;

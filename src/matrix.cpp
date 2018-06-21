@@ -54,18 +54,19 @@ arma::mat dcov_drho(const arma::uvec& times,
   arma::mat A(m, m);
   double t1, t2, dt;
   double rho_sq = std::pow(rho, 2.0);
+  double sigma_sq = std::pow(sigma, 2.0);
   for (int j = 0; j < m - 1; ++j) {
     t1 = static_cast<double>(times(j));
-    A(j, j) = 2.0 * rho * std::pow(1.0 - rho_sq, -2.0);
+    A(j, j) = 2.0 * rho * std::pow(1.0 - rho_sq, -2.0) * sigma_sq;
     for (int i = j + 1; i < times.size(); ++i) {
       t2 = static_cast<double>(times(i));
       dt = std::abs(t2 - t1);
-      A(i, j) = std::pow(rho, dt) * (dt - (dt - 2) * rho_sq)
-              * std::pow(1.0 - rho_sq, -2.0);
+      A(i, j) = std::pow(rho, dt - 1.0) * (dt - (dt - 2) * rho_sq)
+              * std::pow(1.0 - rho_sq, -2.0)  * sigma_sq;
       A(j, i) = A(i, j);
     }
   }
-  A(m-1, m-1) = 2.0 * rho * std::pow(1 - rho_sq, -2.0);
+  A(m-1, m-1) = 2.0 * rho * std::pow(1 - rho_sq, -2.0) * sigma_sq;
   return A;
 }
 

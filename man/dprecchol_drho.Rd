@@ -26,7 +26,7 @@ library(Matrix)
 t <- c(1, 3:4, 6, 8)
 r <- 0.5
 s <- 1
-U <- ar1_prec_chol_irregular(t, r, s)
+U <- ar1_prec_chol(t, r, s)
 dQ <- dprec_drho(t, r, s)
 (dU <- dprecchol_drho(U, dQ))
 }

@@ -16,11 +16,6 @@
 //' @param sigma A positive real number.
 //' @return A matrix with \code{n} rows and \code{n} columns.
 //' @keywords internal
-//' @examples
-//' n <- 5
-//' rho <- 0.5
-//' sigma <- 1
-//' ar1_cov_consecutive(n, rho, sigma)
 // [[Rcpp::export]]
 arma::mat ar1_cov_consecutive(const int n,
                               const double rho,
@@ -36,12 +31,6 @@ arma::mat ar1_cov_consecutive(const int n,
 //' @param rho A real number strictly less than 1 in absolute value.
 //' @param sigma A positive real number.
 //' @return A square matrix with \code{length(times)} rows.
-//' @keywords internal
-//' @examples
-//' times <- c(1, 4:5, 7)
-//' rho <- 0.5
-//' sigma <- 1
-//' ar1_cov_irregular(times, rho, sigma)
 // [[Rcpp::export]]
 arma::mat ar1_cov_irregular(const arma::uvec& times,
                             const double rho,
@@ -131,12 +120,6 @@ arma::mat ar1_cov_chol(const arma::uvec& times,
 //' @param sigma A positive real number.
 //' @return A matrix with \code{n} rows and \code{n} columns.
 //' @keywords internal
-//' @examples
-//' library(Matrix)
-//' n <- 5
-//' rho <- 0.5
-//' sigma <- 1
-//' ar1_prec_consecutive(n, rho, sigma)
 // [[Rcpp::export]]
 arma::sp_mat ar1_prec_consecutive(const int n,
                                   const double rho,
@@ -154,12 +137,6 @@ arma::sp_mat ar1_prec_consecutive(const int n,
 //' @param sigma A positive real number.
 //' @return A square matrix with \code{length(times)} rows.
 //' @keywords internal
-//' @examples
-//' library(Matrix)
-//' times <- c(1, 4:5, 7)
-//' rho <- 0.5
-//' sigma <- 1
-//' ar1_prec_irregular(times, rho, sigma)
 // [[Rcpp::export]]
 arma::sp_mat ar1_prec_irregular(const arma::uvec& times,
                                 const double rho,
@@ -190,9 +167,9 @@ arma::sp_mat ar1_prec(const arma::uvec& times,
 
 //' Upper Cholesky decomposition of a tridiagonal matrix.
 //'
-//' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
-//' decomposition will be a sparse lower triangular matrix with non-zero
-//' elements only on the main diagonal and the diagonal below it.
+//' Creates the upper Cholesky decomposition of a tridiagonal matrix. The
+//' decomposition will be a sparse upper triangular matrix with non-zero
+//' elements only on the main diagonal and the diagonal above it.
 //' @param Q A square tridiagonal matrix.
 //' @return A sparse square matrix with the same size as the input matrix.
 //' @export
@@ -201,7 +178,7 @@ arma::sp_mat ar1_prec(const arma::uvec& times,
 //' times <- c(1, 4:5, 7)
 //' rho <- 0.5
 //' sigma <- 1
-//' Q <- ar1_prec_irregular(times, rho, sigma)
+//' Q <- ar1_prec(times, rho, sigma)
 //' chol_tridiag_upper(Q)
 // [[Rcpp::export]]
 arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
@@ -223,7 +200,7 @@ arma::sp_mat chol_tridiag_upper(const arma::sp_mat& Q);
 //' times <- c(1, 4:5, 7)
 //' rho <- 0.5
 //' sigma <- 1
-//' ar1_prec_chol_irregular(times, rho, sigma)
+//' ar1_prec_chol(times, rho, sigma)
 // [[Rcpp::export]]
 arma::sp_mat ar1_prec_chol(const arma::uvec& times,
                            const double rho,
@@ -306,6 +283,7 @@ arma::mat dcov_drho(const arma::uvec& times,
 //' @param U A sparse band 1 upper triangular matrix of the same dimensions as
 //'   \code{A}.
 //' @return A sparse band 1 upper triangular matrix.
+//' @keywords internal
 // [[Rcpp::export]]
 arma::sp_mat mult_U_band1U(const arma::sp_mat& A, const arma::sp_mat U);
 
@@ -325,7 +303,7 @@ arma::sp_mat mult_U_band1U(const arma::sp_mat& A, const arma::sp_mat U);
 //' t <- c(1, 3:4, 6, 8)
 //' r <- 0.5
 //' s <- 1
-//' U <- ar1_prec_chol_irregular(t, r, s)
+//' U <- ar1_prec_chol(t, r, s)
 //' dQ <- dprec_drho(t, r, s)
 //' (dU <- dprecchol_drho(U, dQ))
 // [[Rcpp::export]]
@@ -341,12 +319,12 @@ arma::sp_mat dprecchol_drho(const arma::sp_mat& U, const arma::sp_mat& dQ);
 //' @param dQ The derivative of the precision matrix \code{Q} with respect to
 //'   the correlation parameter \code{rho}.
 //' @return A matrix of the same dimensions as \code{U}.
-//' @keywords internal
+//' @export
 //' @examples
 //' t <- c(1, 3:4, 6, 8)
 //' r <- 0.5
 //' s <- 1
-//' U <- ar1_prec_chol_irregular(t, r, s)
+//' U <- ar1_prec_chol(t, r, s)
 //' dQ <- dprec_drho(t, r, s)
 //' (dU <- dcovchol_drho(U, dQ))
 // [[Rcpp::export]]

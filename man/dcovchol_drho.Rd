@@ -25,8 +25,7 @@ of an AR(1) process with respect to the parameter \code{rho}.
 t <- c(1, 3:4, 6, 8)
 r <- 0.5
 s <- 1
-U <- ar1_prec_chol_irregular(t, r, s)
+U <- ar1_prec_chol(t, r, s)
 dQ <- dprec_drho(t, r, s)
 (dU <- dcovchol_drho(U, dQ))
 }
-\keyword{internal}

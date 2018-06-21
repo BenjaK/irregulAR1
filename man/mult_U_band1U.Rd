@@ -18,3 +18,4 @@ A sparse band 1 upper triangular matrix.
 \description{
 Multiply an upper triangular matrix with a band 1 upper triangular matrix.
 }
+\keyword{internal}

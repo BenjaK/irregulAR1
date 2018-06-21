@@ -2,64 +2,45 @@
 
 #' Simulate from a stationary Gaussian AR(1) process.
 #'
-#' Simulate from a stationary Gaussian AR(1) process at \code{n} consecutive
-#' time points.
-#' @param n The number of timepoints to simulate for.
-#' @param rho A real number strictly less than 1 in absolute value.
-#' @param sigma A positive real number.
-#' @param mu A vector of expected values with length \code{n}, or a scalar
-#'   (default equal to 0).
-#' @return A vector of length \code{n} with the process values.
-#' @export
-#' @examples
-#' n <- 10
-#' rho <- 0.5
-#' sigma <- 1
-#' mu <- 1:10
-#' ar1_sim_consecutive(n, rho, sigma)
-#' ar1_sim_consecutive(n, rho, sigma, mu)
-ar1_sim_consecutive <- function(n, rho, sigma, mu = 0) {
-  if (length(sigma) != 1 || length(rho) != 1) {
-    stop("sigma and rho must be scalars.")
-  }
-  if (abs(rho) >= 1) stop("rho must be less than 1 in magnitude.")
-  if (sigma < 0) stop("sigma must be positive")
-  if (n < 0) stop("n must be non-negative.")
-  if (n == 0) return(numeric(0))
-  if (!(length(mu) %in% c(1, n))) stop("mu must be of length 1 or n.")
-
-  return(as.vector(mu + ar1_sim_cpp(n, rho, sigma)))
-}
-
-
-#' Simulate from a stationary Gaussian AR(1) process at irregular times.
-#'
-#' Simulate from a stationary Gaussian AR(1) process at irregular times.
-#' @param times The time points to simulate for.
+#' Simulate from a stationary Gaussian AR(1) process, either at consecutive or
+#' irregular times.
+#' @param times The time points to simulate for. If a single positive integer,
+#'   then that many consecutive values will be simulated.
 #' @param rho A real number strictly less than 1 in absolute value.
 #' @param sigma A positive real number.
 #' @param mu A vector of expected values with length \code{length(times)}, or a
 #'   scalar (default equal to 0).
-#' @return A vector of length \code{n} with the process values.
+#' @return If \code{length(times) > 1}, a vector of length \code{length(times)}.
+#'   Else (\code{length(times) == 1} a vector with as many values as the integer
+#'   \code{times}.
 #' @export
 #' @examples
 #' times <- c(3, 5:7, 10)
 #' rho <- 0.5
 #' sigma <- 1
 #' mu <- seq_along(times)
-#' ar1_sim_irregular(times, rho, sigma)
-#' ar1_sim_irregular(times, rho, sigma, mu)
-ar1_sim_irregular <- function(times, rho, sigma, mu = 0) {
-  if (length(mu) != 1 && length(mu) != length(times))
-    stop("Lengths of times and mu (if not a single value) must match.")
+#' ar1_sim(times[1], rho, sigma)
+#' ar1_sim(times, rho, sigma)
+#' ar1_sim(times, rho, sigma, mu)
+ar1_sim <- function(times, rho, sigma, mu = 0) {
   if (length(sigma) != 1 || length(rho) != 1) {
     stop("sigma and rho must be scalars.")
   }
-  if (abs(rho) >= 1) stop("rho must be less than 1 in magnitude.")
   if (sigma < 0) stop("sigma must be positive")
+  if (abs(rho) >= 1) stop("rho must be less than 1 in magnitude.")
+  if (length(times) == 1 && times < 0) stop("times must be non-negative.")
+  if (length(times) == 1 && times == 0) return(numeric(0))
+  if (length(times) == 1 && length(mu) > 1 && length(mu) != times)
+    stop("mu should contain as many elements as the number of timepoints.")
+  if (length(mu) > 1 && length(times) > 1 && length(mu) != length(times))
+    stop("Lengths of times and mu (if not a single value) must match.")
   if (!all(times == as.integer(times))) stop("times must be an integer vector.")
 
-  return(as.vector(mu + ar1_sim_irregular_cpp(times, rho, sigma)))
+  if (length(times) == 1) {
+    return(as.vector(mu + ar1_sim_cpp(times, rho, sigma)))
+  } else {
+    return(as.vector(mu + ar1_sim_irregular_cpp(times, rho, sigma)))
+  }
 }
 
 #' Simulate from a stationary Gaussian AR(1) process.

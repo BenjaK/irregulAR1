@@ -27,11 +27,6 @@ ar1_lpdf_cpp <- function(x, mu, times, rho, sigma) {
 #' @param sigma A positive real number.
 #' @return A matrix with \code{n} rows and \code{n} columns.
 #' @keywords internal
-#' @examples
-#' n <- 5
-#' rho <- 0.5
-#' sigma <- 1
-#' ar1_cov_consecutive(n, rho, sigma)
 ar1_cov_consecutive <- function(n, rho, sigma) {
     .Call(`_irregulAR1_ar1_cov_consecutive`, n, rho, sigma)
 }
@@ -46,12 +41,6 @@ ar1_cov_consecutive <- function(n, rho, sigma) {
 #' @param rho A real number strictly less than 1 in absolute value.
 #' @param sigma A positive real number.
 #' @return A square matrix with \code{length(times)} rows.
-#' @keywords internal
-#' @examples
-#' times <- c(1, 4:5, 7)
-#' rho <- 0.5
-#' sigma <- 1
-#' ar1_cov_irregular(times, rho, sigma)
 ar1_cov_irregular <- function(times, rho, sigma) {
     .Call(`_irregulAR1_ar1_cov_irregular`, times, rho, sigma)
 }
@@ -136,12 +125,6 @@ ar1_cov_chol <- function(times, rho, sigma) {
 #' @param sigma A positive real number.
 #' @return A matrix with \code{n} rows and \code{n} columns.
 #' @keywords internal
-#' @examples
-#' library(Matrix)
-#' n <- 5
-#' rho <- 0.5
-#' sigma <- 1
-#' ar1_prec_consecutive(n, rho, sigma)
 ar1_prec_consecutive <- function(n, rho, sigma) {
     .Call(`_irregulAR1_ar1_prec_consecutive`, n, rho, sigma)
 }
@@ -158,12 +141,6 @@ ar1_prec_consecutive <- function(n, rho, sigma) {
 #' @param sigma A positive real number.
 #' @return A square matrix with \code{length(times)} rows.
 #' @keywords internal
-#' @examples
-#' library(Matrix)
-#' times <- c(1, 4:5, 7)
-#' rho <- 0.5
-#' sigma <- 1
-#' ar1_prec_irregular(times, rho, sigma)
 ar1_prec_irregular <- function(times, rho, sigma) {
     .Call(`_irregulAR1_ar1_prec_irregular`, times, rho, sigma)
 }
@@ -192,9 +169,9 @@ ar1_prec <- function(times, rho, sigma) {
 
 #' Upper Cholesky decomposition of a tridiagonal matrix.
 #'
-#' Creates the lower Cholesky decomposition of a tridiagonal matrix. The
-#' decomposition will be a sparse lower triangular matrix with non-zero
-#' elements only on the main diagonal and the diagonal below it.
+#' Creates the upper Cholesky decomposition of a tridiagonal matrix. The
+#' decomposition will be a sparse upper triangular matrix with non-zero
+#' elements only on the main diagonal and the diagonal above it.
 #' @param Q A square tridiagonal matrix.
 #' @return A sparse square matrix with the same size as the input matrix.
 #' @export
@@ -203,7 +180,7 @@ ar1_prec <- function(times, rho, sigma) {
 #' times <- c(1, 4:5, 7)
 #' rho <- 0.5
 #' sigma <- 1
-#' Q <- ar1_prec_irregular(times, rho, sigma)
+#' Q <- ar1_prec(times, rho, sigma)
 #' chol_tridiag_upper(Q)
 chol_tridiag_upper <- function(Q) {
     .Call(`_irregulAR1_chol_tridiag_upper`, Q)
@@ -226,7 +203,7 @@ chol_tridiag_upper <- function(Q) {
 #' times <- c(1, 4:5, 7)
 #' rho <- 0.5
 #' sigma <- 1
-#' ar1_prec_chol_irregular(times, rho, sigma)
+#' ar1_prec_chol(times, rho, sigma)
 ar1_prec_chol <- function(times, rho, sigma) {
     .Call(`_irregulAR1_ar1_prec_chol`, times, rho, sigma)
 }
@@ -305,6 +282,7 @@ dcov_drho <- function(times, rho, sigma) {
 #' @param U A sparse band 1 upper triangular matrix of the same dimensions as
 #'   \code{A}.
 #' @return A sparse band 1 upper triangular matrix.
+#' @keywords internal
 mult_U_band1U <- function(A, U) {
     .Call(`_irregulAR1_mult_U_band1U`, A, U)
 }
@@ -325,7 +303,7 @@ mult_U_band1U <- function(A, U) {
 #' t <- c(1, 3:4, 6, 8)
 #' r <- 0.5
 #' s <- 1
-#' U <- ar1_prec_chol_irregular(t, r, s)
+#' U <- ar1_prec_chol(t, r, s)
 #' dQ <- dprec_drho(t, r, s)
 #' (dU <- dprecchol_drho(U, dQ))
 dprecchol_drho <- function(U, dQ) {
@@ -342,12 +320,12 @@ dprecchol_drho <- function(U, dQ) {
 #' @param dQ The derivative of the precision matrix \code{Q} with respect to
 #'   the correlation parameter \code{rho}.
 #' @return A matrix of the same dimensions as \code{U}.
-#' @keywords internal
+#' @export
 #' @examples
 #' t <- c(1, 3:4, 6, 8)
 #' r <- 0.5
 #' s <- 1
-#' U <- ar1_prec_chol_irregular(t, r, s)
+#' U <- ar1_prec_chol(t, r, s)
 #' dQ <- dprec_drho(t, r, s)
 #' (dU <- dcovchol_drho(U, dQ))
 dcovchol_drho <- function(U, dQ) {

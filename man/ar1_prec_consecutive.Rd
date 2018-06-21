@@ -23,11 +23,4 @@ parameters \code{rho} and \code{sigma}, observed at \code{n} consecutive
 time points. The process is assumed to be in stationarity and to have
 Gaussian errors. The matrix is a tridiagonal band matrix and thus sparse.
 }
-\examples{
-library(Matrix)
-n <- 5
-rho <- 0.5
-sigma <- 1
-ar1_prec_consecutive(n, rho, sigma)
-}
 \keyword{internal}

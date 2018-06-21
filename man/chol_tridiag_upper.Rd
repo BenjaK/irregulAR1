@@ -13,15 +13,15 @@ chol_tridiag_upper(Q)
 A sparse square matrix with the same size as the input matrix.
 }
 \description{
-Creates the lower Cholesky decomposition of a tridiagonal matrix. The
-decomposition will be a sparse lower triangular matrix with non-zero
-elements only on the main diagonal and the diagonal below it.
+Creates the upper Cholesky decomposition of a tridiagonal matrix. The
+decomposition will be a sparse upper triangular matrix with non-zero
+elements only on the main diagonal and the diagonal above it.
 }
 \examples{
 library(Matrix)
 times <- c(1, 4:5, 7)
 rho <- 0.5
 sigma <- 1
-Q <- ar1_prec_irregular(times, rho, sigma)
+Q <- ar1_prec(times, rho, sigma)
 chol_tridiag_upper(Q)
 }

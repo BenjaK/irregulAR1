@@ -28,5 +28,5 @@ library(Matrix)
 times <- c(1, 4:5, 7)
 rho <- 0.5
 sigma <- 1
-ar1_prec_chol_irregular(times, rho, sigma)
+ar1_prec_chol(times, rho, sigma)
 }
